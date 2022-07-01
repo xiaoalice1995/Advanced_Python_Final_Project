@@ -55,11 +55,9 @@ def main():
     ball_x = 150
     ball_y = 150
     ball_d = 20
-    ball_x_speed = 2
-    ball_y_speed = 2
-    ball_list = []
-    ball_list.append(Ball(ball_img, ball_x, ball_y, ball_d, ball_x_speed, ball_y_speed))
-    timer = 0
+    ball_x_speed = 1
+    ball_y_speed = 1
+    ball = Ball(ball_img, ball_x, ball_y, ball_d, ball_x_speed, ball_y_speed)
     
     # main loop
     while 1:
@@ -80,25 +78,13 @@ def main():
                 paddle_speed = 0
 
         if status == PLAYING:
-
-            screen.blit(bg, (0, 0))
-            timer += 1
-            if timer == 1000:
-                ball_x = random.randint(100,SCREEN_WIDTH)
-                ball_y = random.randint(40,SCREEN_HEIGHT/3)
-                ball_list.append(Ball(ball_img, ball_x, ball_y, ball_d, ball_x_speed, ball_y_speed))
-                timer = 0
                 
             # ball position change
-            for ball in ball_list:
-                [lose, score] = ball.move(SCREEN_WIDTH, SCREEN_HEIGHT)
-                if lose:
-                    print(ball_x,ball_y)
-                    status = END
-                    break
-                
-                check_collide(ball, paddle_x, paddle_y, paddle_width)
-                ball.draw(screen)
+            [lose, score] = ball.move(SCREEN_WIDTH, SCREEN_HEIGHT)
+            if lose:
+                print(ball_x,ball_y)
+                status = END
+            check_collide(ball, paddle_x, paddle_y, paddle_width)   
 
             # paddle position change
             paddle_x += paddle_speed
@@ -108,6 +94,8 @@ def main():
                 paddle_x = 0
 
             # draw
+            screen.blit(bg, (0, 0))
+            ball.draw(screen)
             screen.blit(paddle, (paddle_x, paddle_y))
 
             # show score
