@@ -31,8 +31,8 @@ def check_collide(ball, p_x, p_y, p_w):
     b_d = ball.get_size()
 
     if b_y + b_d >= p_y: 
-        if b_x + (b_d / 2) > p_x + p_w \
-            or b_x + (b_d / 2) < p_x:
+        if b_x + (b_d / 2) * 0.7 > p_x + p_w \
+            or b_x + (b_d / 2) * 1.3 < p_x:
             ball.set_lose()
         else: # collide
             ball.add_score()
@@ -53,8 +53,8 @@ def main():
 
     # instantiate ball
     ball_img = pygame.image.load("images/ball.png")
-    ball_x_speed = 2
-    ball_y_speed = 2
+    ball_x_speed = 1
+    ball_y_speed = 1
     ball_x = 150
     ball_y = 150
     ball_d = 20
@@ -62,11 +62,11 @@ def main():
     ball_list.append(Ball(ball_img, ball_x, ball_y, ball_d, ball_x_speed, ball_y_speed))
 
     timer = 0
+    timer_update = 0
+    if_update = False
     
     # main loop
     while 1:
-        
-        
         
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -79,6 +79,8 @@ def main():
                     paddle_speed = -10
                 elif key == pygame.K_s and status == BEGINNING:
                     status = PLAYING
+                    timer = 0
+                    timer_update = 0
                 elif key == pygame.K_r and status == END:
                     status = BEGINNING
             elif event.type == pygame.KEYUP:
@@ -87,14 +89,19 @@ def main():
         if status == PLAYING:
             screen.blit(bg, (0, 0))
             timer += 1
+            timer_update += 1
             if timer == 1000:
                 ball_x = random.randint(100,SCREEN_WIDTH)
                 ball_y = random.randint(40,SCREEN_HEIGHT/3)
-                ball_list.append(Ball(ball_img, ball_x, ball_y, ball_d, ball_x_speed, ball_y_speed))
+                ball_list.append(Size_Change_Ball(ball_img, ball_x, ball_y, ball_d, ball_x_speed, ball_y_speed))
                 timer = 0
             
             # ball position change
             score = 0
+            if timer_update == 20:
+                if_update = True
+                timer_update = 0
+                
             for ball in ball_list:
                 [lose, ball_score] = ball.move(SCREEN_WIDTH, SCREEN_HEIGHT)
                 score += ball_score
@@ -103,8 +110,13 @@ def main():
                     break
                 
                 check_collide(ball, paddle_x, paddle_y, paddle_width)
-                ball.draw(screen)
 
+                if if_update:
+                    ball.update()
+                ball.draw(screen)
+            if if_update:
+                if_update = False
+            
             # paddle position change
             paddle_x += paddle_speed
             if paddle_x + paddle_width >= SCREEN_WIDTH:
@@ -125,9 +137,6 @@ def main():
 
             screen.blit(bg, (0, 0))
             
-##            for ball in ball_list:
-##                ball.score = 0
-##                ball.lose = False
             ball_list = []
             ball_list.append(Ball(ball_img, ball_x, ball_y, ball_d, ball_x_speed, ball_y_speed))
 

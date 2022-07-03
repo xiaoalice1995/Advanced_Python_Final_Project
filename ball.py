@@ -1,5 +1,9 @@
 import pygame
 
+NORMAL = 0
+SIZE_CHANGING = 1
+SPEED_CHANGING = 2
+
 class Ball:
     def __init__(self, img, x, y, d, x_speed, y_speed):
         self.img = img
@@ -30,11 +34,17 @@ class Ball:
         if not self.lose:
             screen.blit(self.img, (self.x, self.y))
 
+    def update(self):
+        pass
+
     def get_pos(self):
         return [self.x, self.y]
 
     def get_size(self):
         return self.d
+
+    def get_type(self):
+        return NORMAL
 
     def set_lose(self):
         self.lose = True
@@ -51,3 +61,30 @@ class Ball:
     def play_hit_sound(self):
         self.hit_sound.play()
 
+class Size_Change_Ball(Ball):
+    
+    def __init__(self,img, x, y, d, x_speed, y_speed):
+        super().__init__(img, x, y, d, x_speed, y_speed)
+        self.grow = 0
+        self.mode = 1
+        self.orig_img = img
+    
+    def get_type(self):
+        return SIZE_CHANGING
+
+    def update(self):
+        if self.grow > 40:
+            self.mode = -1
+        if self.grow < 1:
+            self.mode = 1
+        self.grow += self.mode 
+
+        self.d = self.orig_img.get_size()[0] + round(self.grow)
+        self.img = pygame.transform.scale(self.orig_img, (self.d, self.d))
+
+    def get_size(self):
+        return self.d
+
+    def draw(self, screen):
+        if not self.lose:
+            screen.blit(self.img, (self.x, self.y))
