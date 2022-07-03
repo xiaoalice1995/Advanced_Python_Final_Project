@@ -10,7 +10,7 @@ by Team A:
 
 ### **Conceptual specifications**
 
-Pong! is a simple, easy to play mini-game. The player only needs to control peddel to catch the ball, and once the ball is not caught, the game is over. The number of balls increases over time and the game becomes more difficult.
+Pong! is a simple, easy to play mini-game. The player only needs to control paddle to catch the ball, and once the ball is not caught, the game is over. The number of balls increases over time and the game becomes more difficult.
 
 The player's score is displayed in the top left corner of the game and the final score is displayed in the centre of the screen at the end of the game.
 
@@ -290,9 +290,9 @@ pygame.quit()
 
 When the code is run, the user is taken to the Pygame main form, where user can press 'S' to start the game.
 
-In the game, the player controls the paddel via the left and right keyboard keys. The game consists of two states: Beginning and End：
+In the game, the player controls the paddle via the left and right keyboard keys. The game consists of two states: Beginning and End：
 
-In Beginning, the player can play the game and each time the paddel catches a ball, the player adds one point to the score, which is displayed in the top left corner of the window. Method 'check_collide' will monitor if the ball has been successfully taken by the paddel and achieve a ball bounce if the player does not lose. In addition to the player controlling the paddel, the game is made more difficult by generating an extra ball every 1000 frames. When the player does not receive the ball, the game fails and the game goes to the state End.
+In Beginning, the player can play the game and each time the paddle catches a ball, the player adds one point to the score, which is displayed in the top left corner of the window. Method 'check_collide' will monitor if the ball has been successfully taken by the paddle and achieve a ball bounce if the player does not lose. In addition to the player controlling the paddle, the game is made more difficult by generating an extra ball every 1000 frames. When the player does not receive the ball, the game fails and the game goes to the state End.
 
 In state End, the game displays the player's final score. The player can replay the game by pressing the R button.
 
